@@ -1,7 +1,8 @@
 """Test PVVX devices."""
-from datetime import datetime
+from time import time
 
 import pytest
+import time_machine
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 
@@ -64,13 +65,13 @@ def test_get_time_from_bytes() -> None:
     """Test the conversion from bytes to a timestamp."""
     with pytest.raises(TimeNotReadableError):
         PVVX(BLEDevice("A4:C1:38:D9:01:10")).get_time_from_bytes(
-            bytes([0x23, 0xCD, 0xAE, 0xB9, 0x63])
+            bytes([0x23, 0xDD, 0xBC, 0xB9, 0x63])
         )
 
 
+@time_machine.travel("2023-01-07 18:41:33 +0000")
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
-    timestamp = datetime.fromisoformat("2023-01-07 18:41:33").timestamp()
-    assert PVVX(BLEDevice("A4:C1:38:D9:01:10")).get_bytes_from_time(timestamp) == bytes(
-        [0x23, 0xCD, 0xAE, 0xB9, 0x63]
+    assert PVVX(BLEDevice("A4:C1:38:D9:01:10")).get_bytes_from_time(time()) == bytes(
+        [0x23, 0xDD, 0xBC, 0xB9, 0x63]
     )
