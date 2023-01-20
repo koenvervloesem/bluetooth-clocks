@@ -1,12 +1,11 @@
 """Test Xiaomi devices."""
 from datetime import datetime
-from time import localtime
 
 import pytest
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 
-from bluetooth_clocks import SECONDS_IN_HOUR, supported_devices
+from bluetooth_clocks import supported_devices
 from bluetooth_clocks.devices.xiaomi import LYWSD02
 from bluetooth_clocks.exceptions import InvalidTimeBytesError
 
@@ -68,10 +67,10 @@ def test_readable() -> None:
 
 def test_get_time_from_bytes() -> None:
     """Test the conversion from bytes to a timestamp."""
-    timestamp = datetime.fromisoformat("2023-01-07 18:41:33").timestamp()
+    timestamp = datetime.fromisoformat("2023-01-07 18:41:33+00:00").timestamp()
     assert (
         LYWSD02(BLEDevice("E7:2E:00:B1:38:96")).get_time_from_bytes(
-            bytes([0xCD, 0xAE, 0xB9, 0x63, 0x01])
+            bytes([0xDD, 0xBC, 0xB9, 0x63, 0x00])
         )
         == timestamp
     )
@@ -85,8 +84,8 @@ def test_get_time_from_bytes_invalid() -> None:
 
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
-    timestamp = datetime.fromisoformat("2023-01-07 18:41:33").timestamp()
-    timezone_offset = localtime().tm_gmtoff // SECONDS_IN_HOUR
-    assert LYWSD02(BLEDevice("E7:2E:00:B1:38:96")).get_bytes_from_time(
-        timestamp
-    ) == bytes([0xCD, 0xAE, 0xB9, 0x63, timezone_offset])
+    timestamp = datetime.fromisoformat("2023-01-07 18:41:33+00:00").timestamp()
+    # Ignore the timezone offset
+    assert LYWSD02(BLEDevice("E7:2E:00:B1:38:96")).get_bytes_from_time(timestamp)[
+        :-1
+    ] == bytes([0xDD, 0xBC, 0xB9, 0x63])
