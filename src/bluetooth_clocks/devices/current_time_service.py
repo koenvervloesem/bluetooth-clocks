@@ -50,7 +50,7 @@ class CurrentTimeService(BluetoothClock):
         of advertised service UUIDs.
 
         Args:
-            device (BLEDevice): The Bluetooth device.
+            device (~bleak.backends.device.BLEDevice): The Bluetooth device.
             advertisement_data (AdvertisementData): The advertisement data.
 
         Returns:
@@ -142,7 +142,7 @@ class InfiniTime(CurrentTimeService):
         to or starts with `LOCAL_NAME`.
 
         Args:
-            device (BLEDevice): The Bluetooth device.
+            device (~bleak.backends.device.BLEDevice): The Bluetooth device.
             advertisement_data (AdvertisementData): The advertisement data.
 
         Returns:

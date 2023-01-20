@@ -39,7 +39,7 @@ class PVVX(BluetoothClock):
         0x181a (PVVX custom format).
 
         Args:
-            device (BLEDevice): The Bluetooth device.
+            device (~bleak.backends.device.BLEDevice): The Bluetooth device.
             advertisement_data (AdvertisementData): The advertisement data.
 
         Returns:
