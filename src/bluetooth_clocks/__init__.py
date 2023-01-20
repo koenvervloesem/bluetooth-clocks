@@ -137,7 +137,7 @@ class BluetoothClock(ABC):
         an object of the corresponding subclass.
 
         Args:
-            device (BLEDevice): The Bluetooth device.
+            device (~bleak.backends.device.BLEDevice): The Bluetooth device.
             advertisement_data (~bleak.backends.scanner.AdvertisementData): The
               advertisement data.
 
@@ -188,7 +188,7 @@ class BluetoothClock(ABC):
         in another way from advertisement data.
 
         Args:
-            device (BLEDevice): The Bluetooth device.
+            device (~bleak.backends.device.BLEDevice): The Bluetooth device.
             advertisement_data (~bleak.backends.scanner.AdvertisementData): The
               advertisement data.
 
