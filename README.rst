@@ -10,6 +10,9 @@
 .. image:: https://readthedocs.org/projects/bluetooth-clocks/badge/?version=latest
     :target: https://bluetooth-clocks.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
+.. image:: https://codecov.io/gh/koenvervloesem/bluetooth-clocks/branch/main/graph/badge.svg?token=RQNLC3OTFN
+    :alt: Codecov coverage
+    :target: https://codecov.io/gh/koenvervloesem/bluetooth-clocks
 .. image:: https://img.shields.io/github/license/koenvervloesem/bluetooth-clocks.svg
     :alt: License
     :target: https://github.com/koenvervloesem/bluetooth-clocks/blob/main/LICENSE.txt
