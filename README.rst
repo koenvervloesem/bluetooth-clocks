@@ -1,6 +1,12 @@
 .. image:: https://github.com/koenvervloesem/bluetooth-clocks/workflows/tests/badge.svg
     :alt: Continuous Integration
     :target: https://github.com/koenvervloesem/bluetooth-clocks/actions
+.. image:: https://img.shields.io/pypi/v/bluetooth-clocks.svg
+    :alt: Python package version
+    :target: https://pypi.org/project/bluetooth-clocks/
+.. image:: https://img.shields.io/pypi/pyversions/bluetooth-clocks.svg
+    :alt: Supported Python versions
+    :target: https://python.org/
 .. image:: https://readthedocs.org/projects/bluetooth-clocks/badge/?version=latest
     :target: https://bluetooth-clocks.readthedocs.io/en/latest/?badge=latest
     :alt: Documentation Status
