@@ -269,8 +269,8 @@ class BluetoothClock(ABC):
             >>> from datetime import datetime
             >>> clock = LYWSD02(BLEDevice("E7:2E:00:B1:38:96"))
             >>> timestamp = clock.get_time_from_bytes(
-            ...             bytes([0xcd, 0xae, 0xb9, 0x63, 0x01]))
-            >>> print(datetime.fromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S"))
+            ...             bytes([0xdd, 0xbc, 0xb9, 0x63, 0x00]))
+            >>> print(datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S"))
             2023-01-07 18:41:33
         """
         raise TimeNotReadableError
