@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Type  # noqa: F401 pylint: disable=unused-import
 
 import pytest
 from bleak.backends.device import BLEDevice

@@ -13,7 +13,7 @@ from inspect import isclass
 from pathlib import Path
 from pkgutil import iter_modules
 from time import time
-from typing import ClassVar
+from typing import ClassVar, Type  # noqa: F401
 from uuid import UUID
 
 from bleak import BleakClient
