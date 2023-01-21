@@ -31,7 +31,7 @@ This project offers a way to easily recognize Bluetooth Low Energy (BLE) clocks 
 their advertisements and has a device-independent API to set and get the time on them.
 
 .. image:: https://github.com/koenvervloesem/bluetooth-clocks/raw/main/docs/_static/synchronized-clocks.jpg
-    :alt: Synchonize all your Bluetooth Low Energy clocks
+    :alt: Synchronize all your Bluetooth Low Energy clocks
 
 .. inclusion-marker-after-intro
 
@@ -143,6 +143,10 @@ These are the options that the ``set`` subcommand recognizes::
       -t TIME, --time TIME  the time to set, in ISO 8601 format (e.g. 2023-01-10T16:20,
                             default: current time)
       -p, --am-pm           use AM/PM format (default: 24-hour format)
+
+.. warning::
+
+  Don't be a jerk by changing the time of other people's clocks. Use this tool responsibly.
 
 Getting the time
 ----------------
