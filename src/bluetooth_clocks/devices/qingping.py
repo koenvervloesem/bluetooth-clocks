@@ -30,7 +30,7 @@ class CGC1(BluetoothClock):
     WRITE_WITH_RESPONSE = True
     """We use write with response to write the time to the Qingping BT Clock Lite.
 
-    Note: The device also supports write without reponse.
+    Note: The device also supports write without response.
     """
 
     LOCAL_NAME = "Qingping BT Clock Lite"
