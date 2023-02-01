@@ -347,8 +347,7 @@ class BluetoothClock(ABC):
 
 # Iterate through the modules in the module `device`.
 package_dir = Path(__file__).resolve().parent / "devices"
-for (_, module_name, _) in iter_modules([str(package_dir)]):  # type: ignore
-
+for _, module_name, _ in iter_modules([str(package_dir)]):  # type: ignore
     # Import the module and iterate through its attributes
     module = import_module(f"{__name__}.devices.{module_name}")
     for attribute_name in dir(module):
