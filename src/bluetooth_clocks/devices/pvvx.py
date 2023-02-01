@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import struct
+from time import localtime
 from uuid import UUID
 
 from bleak.backends.device import BLEDevice
@@ -65,5 +66,5 @@ class PVVX(BluetoothClock):
         return struct.pack(
             self.TIME_SET_FORMAT,
             0x23,
-            int(timestamp),
+            int(timestamp + localtime(timestamp).tm_gmtoff),
         )

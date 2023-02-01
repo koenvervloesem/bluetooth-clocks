@@ -1,4 +1,6 @@
 """Test Qingping devices."""
+import sys
+from datetime import datetime
 from time import time
 
 import pytest
@@ -10,9 +12,16 @@ from bluetooth_clocks import supported_devices
 from bluetooth_clocks.devices.qingping import CGC1
 from bluetooth_clocks.exceptions import TimeNotReadableError
 
+if sys.version_info >= (3, 9):
+    from zoneinfo import ZoneInfo
+else:
+    from backports.zoneinfo import ZoneInfo
+
 __author__ = "Koen Vervloesem"
 __copyright__ = "Koen Vervloesem"
 __license__ = "MIT"
+
+CET_TZ = ZoneInfo("Europe/Brussels")
 
 
 def test_in_supported_devices() -> None:
@@ -71,9 +80,9 @@ def test_get_time_from_bytes() -> None:
         )
 
 
-@time_machine.travel("2022-12-30 15:30:24 +0000")
+@time_machine.travel(datetime(2022, 12, 30, 16, 30, tzinfo=CET_TZ), tick=False)
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
     assert CGC1(BLEDevice("58:2D:34:54:2D:2C")).get_bytes_from_time(time()) == bytes(
-        [0x05, 0x09, 0x10, 0x04, 0xAF, 0x63]
+        [0x05, 0x09, 0x08, 0x12, 0xAF, 0x63]
     )

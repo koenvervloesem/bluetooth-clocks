@@ -1,4 +1,6 @@
 """Test PVVX devices."""
+import sys
+from datetime import datetime
 from time import time
 
 import pytest
@@ -10,9 +12,16 @@ from bluetooth_clocks import supported_devices
 from bluetooth_clocks.devices.pvvx import PVVX
 from bluetooth_clocks.exceptions import TimeNotReadableError
 
+if sys.version_info >= (3, 9):
+    from zoneinfo import ZoneInfo
+else:
+    from backports.zoneinfo import ZoneInfo
+
 __author__ = "Koen Vervloesem"
 __copyright__ = "Koen Vervloesem"
 __license__ = "MIT"
+
+CET_TZ = ZoneInfo("Europe/Brussels")
 
 
 def test_in_supported_devices() -> None:
@@ -69,9 +78,9 @@ def test_get_time_from_bytes() -> None:
         )
 
 
-@time_machine.travel("2023-01-07 18:41:33 +0000")
+@time_machine.travel(datetime(2023, 1, 7, 18, 41, tzinfo=CET_TZ), tick=False)
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
     assert PVVX(BLEDevice("A4:C1:38:D9:01:10")).get_bytes_from_time(time()) == bytes(
-        [0x23, 0xDD, 0xBC, 0xB9, 0x63]
+        [0x23, 0xBC, 0xBC, 0xB9, 0x63]
     )
