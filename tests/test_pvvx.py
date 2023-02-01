@@ -78,6 +78,7 @@ def test_get_time_from_bytes() -> None:
         )
 
 
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="timezone problem")
 @time_machine.travel(datetime(2023, 1, 7, 18, 41, tzinfo=CET_TZ), tick=False)
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
