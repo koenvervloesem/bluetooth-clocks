@@ -29,12 +29,12 @@ repos:
 #     ]
 
 - repo: https://github.com/PyCQA/isort
-  rev: 5.11.4
+  rev: 5.12.0
   hooks:
   - id: isort
 
 - repo: https://github.com/psf/black
-  rev: 22.12.0
+  rev: 23.1.0
   hooks:
   - id: black
     language_version: python3
@@ -75,7 +75,7 @@ repos:
     - flake8-pytest-style
 
 - repo: https://github.com/pycqa/pylint
-  rev: v2.15.9
+  rev: v2.16.0b1
   hooks:
   - id: pylint
     args:
