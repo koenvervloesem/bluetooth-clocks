@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from struct import pack
+from time import localtime
 from uuid import UUID
 
 from bluetooth_clocks import BluetoothClock
@@ -51,4 +52,9 @@ class CGC1(BluetoothClock):
         Returns:
             bytes: The bytes needed to set the time of the device to `timestamp`.
         """
-        return pack(self.TIME_SET_FORMAT, 0x05, 0x09, int(timestamp))
+        return pack(
+            self.TIME_SET_FORMAT,
+            0x05,
+            0x09,
+            int(timestamp + localtime(timestamp).tm_gmtoff),
+        )
