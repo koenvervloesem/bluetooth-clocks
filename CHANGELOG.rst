@@ -2,6 +2,14 @@
 Changelog
 =========
 
+Version 0.1.2: Local time, please (2023-02-02)
+==============================================
+
+This is a bugfix release. Previously the time on Qingping devices and devices running the PVVX ATC firmware was set to UTC instead of local time.
+
+* Autoupdate pre-commit by @koenvervloesem in https://github.com/koenvervloesem/bluetooth-clocks/pull/12
+* Fix local time on PVVX and Qingping devices by @koenvervloesem in https://github.com/koenvervloesem/bluetooth-clocks/pull/13
+
 Version 0.1.1 (2023-01-23)
 ==========================
 
