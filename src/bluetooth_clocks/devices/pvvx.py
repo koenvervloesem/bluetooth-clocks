@@ -3,10 +3,12 @@ from __future__ import annotations
 
 import struct
 from time import localtime
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-from bleak.backends.device import BLEDevice
-from bleak.backends.scanner import AdvertisementData
+if TYPE_CHECKING:
+    from bleak.backends.device import BLEDevice
+    from bleak.backends.scanner import AdvertisementData
 
 from bluetooth_clocks import BluetoothClock
 
@@ -32,8 +34,10 @@ class PVVX(BluetoothClock):
 
     @classmethod
     def recognize(
-        cls, device: BLEDevice, advertisement_data: AdvertisementData
-    ) -> bool:
+        cls,
+        device: BLEDevice,
+        advertisement_data: AdvertisementData,
+    ) -> bool:  # ARG003
         """Recognize the PVVX device from advertisement data.
 
         This checks whether the advertisement has service data with service UUID
@@ -49,7 +53,11 @@ class PVVX(BluetoothClock):
         """
         return str(cls.SERVICE_DATA_UUID) in advertisement_data.service_data
 
-    def get_bytes_from_time(self, timestamp: float, ampm: bool = False) -> bytes:
+    def get_bytes_from_time(
+        self,
+        timestamp: float,
+        ampm: bool = False,
+    ) -> bytes:
         """Generate the bytes to set the time on the PVVX device.
 
         Args:

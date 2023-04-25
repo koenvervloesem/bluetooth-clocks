@@ -23,7 +23,7 @@ class TPXXX(BluetoothClock):
     """The UUID of the characteristic used to write the time."""
 
     TIME_GET_FORMAT = None
-    """ThermoPro devices don’t support reading the time."""
+    """ThermoPro devices don`t support reading the time."""
 
     TIME_SET_FORMAT = "BBBBBBBBBB"
     """The format string to convert a time to bytes written to the device.
@@ -61,7 +61,7 @@ class TPXXX(BluetoothClock):
         )
 
 
-class TP358(TPXXX):  # pylint: disable=too-few-public-methods
+class TP358(TPXXX):
     """Bluetooth clock support for the ThermoPro TP358."""
 
     DEVICE_TYPE = "ThermoPro TP358"
@@ -72,7 +72,7 @@ class TP358(TPXXX):  # pylint: disable=too-few-public-methods
     """The local name should start with `LOCAL_NAME`."""
 
 
-class TP393(TPXXX):  # pylint: disable=too-few-public-methods
+class TP393(TPXXX):
     """Bluetooth clock support for the ThermoPro TP393."""
 
     DEVICE_TYPE = "ThermoPro TP393"

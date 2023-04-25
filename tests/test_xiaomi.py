@@ -32,7 +32,7 @@ def test_in_supported_devices() -> None:
 def test_recognize() -> None:
     """Test whether the Xiaomi LYWSD02 is recognized from an advertisement."""
     assert LYWSD02.recognize(
-        BLEDevice("E7:2E:00:B1:38:96", "LYWSD02"),
+        BLEDevice("E7:2E:00:B1:38:96", "LYWSD02", {}, -67),
         AdvertisementData(
             local_name="LYWSD02",
             manufacturer_data={},
@@ -58,8 +58,8 @@ def test_recognize() -> None:
                         0x02,
                         0xD5,
                         0x00,
-                    ]
-                )
+                    ],
+                ),
             },
             service_uuids=[
                 "0000181a-0000-1000-8000-00805f9b34fb",
@@ -79,8 +79,8 @@ def test_get_time_from_bytes() -> None:
     """Test the conversion from bytes to a timestamp."""
     timestamp = datetime.fromisoformat("2023-01-07 18:41:33+00:00").timestamp()
     assert (
-        LYWSD02(BLEDevice("E7:2E:00:B1:38:96")).get_time_from_bytes(
-            bytes([0xDD, 0xBC, 0xB9, 0x63, 0x00])
+        LYWSD02(BLEDevice("E7:2E:00:B1:38:96", "", {}, -67)).get_time_from_bytes(
+            bytes([0xDD, 0xBC, 0xB9, 0x63, 0x00]),
         )
         == timestamp
     )
@@ -89,13 +89,15 @@ def test_get_time_from_bytes() -> None:
 def test_get_time_from_bytes_invalid() -> None:
     """Test whether trying to convert invalid bytes raises an exception."""
     with pytest.raises(InvalidTimeBytesError):
-        LYWSD02(BLEDevice("E7:2E:00:B1:38:96")).get_time_from_bytes(bytes([0x2A]))
+        LYWSD02(BLEDevice("E7:2E:00:B1:38:96", "", {}, -67)).get_time_from_bytes(
+            bytes([0x2A]),
+        )
 
 
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="timezone problem")
 @time_machine.travel(datetime(2023, 1, 7, 18, 41, tzinfo=CET_TZ), tick=False)
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
-    assert LYWSD02(BLEDevice("E7:2E:00:B1:38:96")).get_bytes_from_time(time()) == bytes(
-        [0xAC, 0xAE, 0xB9, 0x63, 0x01]
-    )
+    assert LYWSD02(BLEDevice("E7:2E:00:B1:38:96", "", {}, -67)).get_bytes_from_time(
+        time(),
+    ) == bytes([0xAC, 0xAE, 0xB9, 0x63, 0x01])

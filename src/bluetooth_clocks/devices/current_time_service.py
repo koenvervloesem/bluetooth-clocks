@@ -6,10 +6,12 @@ from __future__ import annotations
 
 import struct
 from datetime import datetime
+from typing import TYPE_CHECKING
 from uuid import UUID
 
-from bleak.backends.device import BLEDevice
-from bleak.backends.scanner import AdvertisementData
+if TYPE_CHECKING:
+    from bleak.backends.device import BLEDevice
+    from bleak.backends.scanner import AdvertisementData
 
 from bluetooth_clocks import MICROSECONDS, BluetoothClock
 from bluetooth_clocks.exceptions import InvalidTimeBytesError
@@ -42,7 +44,9 @@ class CurrentTimeService(BluetoothClock):
 
     @classmethod
     def recognize(
-        cls, device: BLEDevice, advertisement_data: AdvertisementData
+        cls,
+        device: BLEDevice,
+        advertisement_data: AdvertisementData,
     ) -> bool:
         """Recognize the Current Time Service from advertisement data.
 
@@ -95,7 +99,11 @@ class CurrentTimeService(BluetoothClock):
             raise InvalidTimeBytesError(time_bytes) from exception
         return date_time.timestamp()
 
-    def get_bytes_from_time(self, timestamp: float, ampm: bool = False) -> bytes:
+    def get_bytes_from_time(
+        self,
+        timestamp: float,
+        ampm: bool = False,
+    ) -> bytes:
         """Generate the bytes to set the time on the Current Time Service.
 
         Args:
@@ -134,7 +142,9 @@ class InfiniTime(CurrentTimeService):
 
     @classmethod
     def recognize(
-        cls, device: BLEDevice, advertisement_data: AdvertisementData
+        cls,
+        device: BLEDevice,
+        advertisement_data: AdvertisementData,
     ) -> bool:
         """Recognize the PineTime with InfiniTime firmware from advertisement data.
 

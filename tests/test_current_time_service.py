@@ -25,16 +25,16 @@ __license__ = "MIT"
     ],
 )
 def test_in_supported_devices(model: type[BluetoothClock]) -> None:
-    """Test whether the Current Time Service model is in the list of supported devices."""
+    """Test whether Current Time Service model is in the list of supported devices."""
     assert model.DEVICE_TYPE in supported_devices()
 
 
 @pytest.mark.parametrize(
-    "model, device, advertisement_data",
+    ("model", "device", "advertisement_data"),
     [
         (
             CurrentTimeService,
-            BLEDevice("EB:76:55:B9:56:18", "F15"),
+            BLEDevice("EB:76:55:B9:56:18", "F15", {}, -67),
             AdvertisementData(
                 local_name="F15",
                 manufacturer_data={},
@@ -53,7 +53,7 @@ def test_in_supported_devices(model: type[BluetoothClock]) -> None:
         ),
         (
             InfiniTime,
-            BLEDevice("F3:BE:3E:97:17:A4", "InfiniTime"),
+            BLEDevice("F3:BE:3E:97:17:A4", "InfiniTime", {}, -67),
             AdvertisementData(
                 local_name="InfiniTime",
                 manufacturer_data={},
@@ -71,7 +71,7 @@ def test_recognize(
     device: BLEDevice,
     advertisement_data: AdvertisementData,
 ) -> None:
-    """Test whether the Current Time Service model is recognized from an advertisement."""
+    """Test whether Current Time Service model is recognized from an advertisement."""
     assert model.recognize(device=device, advertisement_data=advertisement_data)
 
 
@@ -88,24 +88,27 @@ def test_readable(model: type[BluetoothClock]) -> None:
 
 
 @pytest.mark.parametrize(
-    "model, device, time_bytes, time",
+    ("model", "device", "time_bytes", "time"),
     [
         (
             CurrentTimeService,
-            BLEDevice("EB:76:55:B9:56:18"),
+            BLEDevice("EB:76:55:B9:56:18", "", {}, -67),
             bytes([0xE7, 0x07, 0x01, 0x07, 0x12, 0x29, 0x21, 0x06, 0x00]),
             "2023-01-07 18:41:33",
         ),
         (
             InfiniTime,
-            BLEDevice("F3:BE:3E:97:17:A4"),
+            BLEDevice("F3:BE:3E:97:17:A4", "", {}, -67),
             bytes([0xE7, 0x07, 0x01, 0x07, 0x12, 0x29, 0x21, 0x06, 0x00]),
             "2023-01-07 18:41:33",
         ),
     ],
 )
 def test_get_time_from_bytes(
-    model: type[BluetoothClock], device: BLEDevice, time_bytes: bytes, time: str
+    model: type[BluetoothClock],
+    device: BLEDevice,
+    time_bytes: bytes,
+    time: str,
 ) -> None:
     """Test the conversion from bytes to a timestamp."""
     timestamp = datetime.fromisoformat(time).timestamp()
@@ -113,22 +116,24 @@ def test_get_time_from_bytes(
 
 
 @pytest.mark.parametrize(
-    "model, device, time_bytes",
+    ("model", "device", "time_bytes"),
     [
         (
             CurrentTimeService,
-            BLEDevice("EB:76:55:B9:56:18"),
+            BLEDevice("EB:76:55:B9:56:18", "", {}, -67),
             bytes([0x2A]),
         ),
         (
             InfiniTime,
-            BLEDevice("F3:BE:3E:97:17:A4"),
+            BLEDevice("F3:BE:3E:97:17:A4", "", {}, -67),
             bytes([0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09]),
         ),
     ],
 )
 def test_get_time_from_bytes_invalid(
-    model: type[BluetoothClock], device: BLEDevice, time_bytes: bytes
+    model: type[BluetoothClock],
+    device: BLEDevice,
+    time_bytes: bytes,
 ) -> None:
     """Test whether trying to convert invalid bytes raises an exception."""
     with pytest.raises(InvalidTimeBytesError):
@@ -136,24 +141,27 @@ def test_get_time_from_bytes_invalid(
 
 
 @pytest.mark.parametrize(
-    "model, device, time, time_bytes",
+    ("model", "device", "time", "time_bytes"),
     [
         (
             CurrentTimeService,
-            BLEDevice("EB:76:55:B9:56:18"),
+            BLEDevice("EB:76:55:B9:56:18", "", {}, -67),
             "2023-01-07 18:41:33",
             bytes([0xE7, 0x07, 0x01, 0x07, 0x12, 0x29, 0x21, 0x06, 0x00, 0x00]),
         ),
         (
             InfiniTime,
-            BLEDevice("F3:BE:3E:97:17:A4"),
+            BLEDevice("F3:BE:3E:97:17:A4", "", {}, -67),
             "2023-01-07 18:41:33",
             bytes([0xE7, 0x07, 0x01, 0x07, 0x12, 0x29, 0x21, 0x06, 0x00, 0x00]),
         ),
     ],
 )
 def test_get_bytes_from_time(
-    model: type[BluetoothClock], device: BLEDevice, time: str, time_bytes: bytes
+    model: type[BluetoothClock],
+    device: BLEDevice,
+    time: str,
+    time_bytes: bytes,
 ) -> None:
     """Test the command to set the time."""
     timestamp = datetime.fromisoformat(time).timestamp()

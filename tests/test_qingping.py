@@ -32,7 +32,7 @@ def test_in_supported_devices() -> None:
 def test_recognize() -> None:
     """Test whether the Qingping BT Clock Lite is recognized from an advertisement."""
     assert CGC1.recognize(
-        BLEDevice("58:2D:34:54:2D:2C", "Qingping BT Clock Lite"),
+        BLEDevice("58:2D:34:54:2D:2C", "Qingping BT Clock Lite", {}, -67),
         AdvertisementData(
             local_name="Qingping BT Clock Lite",
             manufacturer_data={},
@@ -58,8 +58,8 @@ def test_recognize() -> None:
                         0x02,
                         0x01,
                         0x64,
-                    ]
-                )
+                    ],
+                ),
             },
             service_uuids=[],
             tx_power=0,
@@ -75,8 +75,8 @@ def test_not_readable() -> None:
 def test_get_time_from_bytes() -> None:
     """Test that this class doesn't support conversion from bytes to a timestamp."""
     with pytest.raises(TimeNotReadableError):
-        CGC1(BLEDevice("58:2D:34:54:2D:2C")).get_time_from_bytes(
-            bytes([0x05, 0x09, 0x00, 0xF6, 0xAE, 0x63])
+        CGC1(BLEDevice("58:2D:34:54:2D:2C", "", {}, -67)).get_time_from_bytes(
+            bytes([0x05, 0x09, 0x00, 0xF6, 0xAE, 0x63]),
         )
 
 
@@ -84,6 +84,6 @@ def test_get_time_from_bytes() -> None:
 @time_machine.travel(datetime(2022, 12, 30, 16, 30, tzinfo=CET_TZ), tick=False)
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
-    assert CGC1(BLEDevice("58:2D:34:54:2D:2C")).get_bytes_from_time(time()) == bytes(
-        [0x05, 0x09, 0x08, 0x12, 0xAF, 0x63]
-    )
+    assert CGC1(BLEDevice("58:2D:34:54:2D:2C", "", {}, -67)).get_bytes_from_time(
+        time(),
+    ) == bytes([0x05, 0x09, 0x08, 0x12, 0xAF, 0x63])

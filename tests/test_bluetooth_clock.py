@@ -21,7 +21,7 @@ def test_create_from_advertisement() -> None:
     """Test whether an object of the right subclass is created from an advertisement."""
     assert isinstance(
         BluetoothClock.create_from_advertisement(
-            BLEDevice("E7:2E:00:B1:38:96", "LYWSD02"),
+            BLEDevice("E7:2E:00:B1:38:96", "LYWSD02", {}, -67),
             AdvertisementData(
                 local_name="LYWSD02",
                 manufacturer_data={},
@@ -47,8 +47,8 @@ def test_create_from_advertisement() -> None:
                             0x02,
                             0xD5,
                             0x00,
-                        ]
-                    )
+                        ],
+                    ),
                 },
                 service_uuids=[
                     "0000181a-0000-1000-8000-00805f9b34fb",
@@ -65,11 +65,11 @@ def test_create_from_advertisement_unknown() -> None:
     """Test whether no subclass is created from an unknown advertisement."""
     with pytest.raises(UnsupportedDeviceError):
         BluetoothClock.create_from_advertisement(
-            BLEDevice("45:B4:07:8A:66:6A"),
+            BLEDevice("45:B4:07:8A:66:6A", "", {}, -67),
             AdvertisementData(
                 local_name=None,
                 manufacturer_data={
-                    0x004C: bytes([0x10, 0x05, 0x47, 0x1C, 0x7F, 0xF1, 0x93])
+                    0x004C: bytes([0x10, 0x05, 0x47, 0x1C, 0x7F, 0xF1, 0x93]),
                 },
                 platform_data=(),
                 rssi=-67,

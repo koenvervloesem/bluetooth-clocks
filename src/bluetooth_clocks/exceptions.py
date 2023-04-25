@@ -10,7 +10,7 @@ class InvalidTimeBytesError(BluetoothClocksError):
 
 
 class TimeNotReadableError(BluetoothClocksError):
-    """Exception raised when trying to read the time on a device that doesn't support this."""
+    """Exception raised when reading the time on a device that doesn't support this."""
 
 
 class UnsupportedDeviceError(BluetoothClocksError):
