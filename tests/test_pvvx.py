@@ -32,7 +32,7 @@ def test_in_supported_devices() -> None:
 def test_recognize() -> None:
     """Test whether PVVX is recognized from an advertisement."""
     assert PVVX.recognize(
-        BLEDevice("A4:C1:38:D9:01:10", "LYWSD03MMC"),
+        BLEDevice("A4:C1:38:D9:01:10", "LYWSD03MMC", {}, -67),
         AdvertisementData(
             local_name="LYWSD03MMC",
             manufacturer_data={},
@@ -56,8 +56,8 @@ def test_recognize() -> None:
                         0x64,
                         0xDC,
                         0x05,
-                    ]
-                )
+                    ],
+                ),
             },
             service_uuids=[],
             tx_power=0,
@@ -73,8 +73,8 @@ def test_readable() -> None:
 def test_get_time_from_bytes() -> None:
     """Test the conversion from bytes to a timestamp."""
     with pytest.raises(TimeNotReadableError):
-        PVVX(BLEDevice("A4:C1:38:D9:01:10")).get_time_from_bytes(
-            bytes([0x23, 0xDD, 0xBC, 0xB9, 0x63])
+        PVVX(BLEDevice("A4:C1:38:D9:01:10", "", {}, -67)).get_time_from_bytes(
+            bytes([0x23, 0xDD, 0xBC, 0xB9, 0x63]),
         )
 
 
@@ -82,6 +82,6 @@ def test_get_time_from_bytes() -> None:
 @time_machine.travel(datetime(2023, 1, 7, 18, 41, tzinfo=CET_TZ), tick=False)
 def test_get_bytes_from_time() -> None:
     """Test the command to set the time."""
-    assert PVVX(BLEDevice("A4:C1:38:D9:01:10")).get_bytes_from_time(time()) == bytes(
-        [0x23, 0xBC, 0xBC, 0xB9, 0x63]
-    )
+    assert PVVX(BLEDevice("A4:C1:38:D9:01:10", "", {}, -67)).get_bytes_from_time(
+        time(),
+    ) == bytes([0x23, 0xBC, 0xBC, 0xB9, 0x63])

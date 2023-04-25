@@ -52,7 +52,11 @@ class LYWSD02(BluetoothClock):
             raise InvalidTimeBytesError(time_bytes) from exception
         return float(time_time)
 
-    def get_bytes_from_time(self, timestamp: float, ampm: bool = False) -> bytes:
+    def get_bytes_from_time(
+        self,
+        timestamp: float,
+        ampm: bool = False,
+    ) -> bytes:
         """Generate the bytes to set the time on the Xiaomi LYWSD02.
 
         Args:

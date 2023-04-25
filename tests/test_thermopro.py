@@ -30,11 +30,11 @@ def test_in_supported_devices(model: type[BluetoothClock]) -> None:
 
 
 @pytest.mark.parametrize(
-    "model, device, advertisement_data",
+    ("model", "device", "advertisement_data"),
     [
         (
             TP358,
-            BLEDevice("BC:C7:DA:6A:52:C6", "TP358 (52C6)"),
+            BLEDevice("BC:C7:DA:6A:52:C6", "TP358 (52C6)", {}, -67),
             AdvertisementData(
                 local_name="TP358 (52C6)",
                 manufacturer_data={0xD2C2: bytes([0x00, 0x3C, 0x02, 0x2C])},
@@ -47,7 +47,7 @@ def test_in_supported_devices(model: type[BluetoothClock]) -> None:
         ),
         (
             TP393,
-            BLEDevice("10:76:36:14:2A:3D", "TP393 (2A3D)"),
+            BLEDevice("10:76:36:14:2A:3D", "TP393 (2A3D)", {}, -67),
             AdvertisementData(
                 local_name="TP393 (2A3D)",
                 manufacturer_data={0xD0C2: bytes([0x00, 0x3F, 0x02, 0x2C])},
@@ -82,22 +82,24 @@ def test_not_readable(model: type[BluetoothClock]) -> None:
 
 
 @pytest.mark.parametrize(
-    "model, device, time_bytes",
+    ("model", "device", "time_bytes"),
     [
         (
             TP358,
-            BLEDevice("BC:C7:DA:6A:52:C6"),
+            BLEDevice("BC:C7:DA:6A:52:C6", "", {}, -67),
             bytes([0xA5, 0x16, 0x0C, 0x1D, 0x12, 0x09, 0x01, 0x04, 0x01, 0x5A]),
         ),
         (
             TP393,
-            BLEDevice("10:76:36:14:2A:3D"),
+            BLEDevice("10:76:36:14:2A:3D", "", {}, -67),
             bytes([0xA5, 0x17, 0x01, 0x07, 0x11, 0x20, 0x32, 0x06, 0x00, 0x5A]),
         ),
     ],
 )
 def test_get_time_from_bytes(
-    model: type[BluetoothClock], device: BLEDevice, time_bytes: bytes
+    model: type[BluetoothClock],
+    device: BLEDevice,
+    time_bytes: bytes,
 ) -> None:
     """Test that this class doesn't support conversion from bytes to a timestamp."""
     with pytest.raises(TimeNotReadableError):
@@ -105,18 +107,18 @@ def test_get_time_from_bytes(
 
 
 @pytest.mark.parametrize(
-    "model, device, time, ampm, time_bytes",
+    ("model", "device", "time", "ampm", "time_bytes"),
     [
         (
             TP358,
-            BLEDevice("BC:C7:DA:6A:52:C6"),
+            BLEDevice("BC:C7:DA:6A:52:C6", "", {}, -67),
             "2022-12-29 18:09:01",
             False,
             bytes([0xA5, 0x16, 0x0C, 0x1D, 0x12, 0x09, 0x01, 0x04, 0x01, 0x5A]),
         ),
         (
             TP393,
-            BLEDevice("10:76:36:14:2A:3D"),
+            BLEDevice("10:76:36:14:2A:3D", "", {}, -67),
             "2023-01-07 17:32:50",
             True,
             bytes([0xA5, 0x17, 0x01, 0x07, 0x11, 0x20, 0x32, 0x06, 0x00, 0x5A]),

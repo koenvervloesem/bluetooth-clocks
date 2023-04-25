@@ -13,12 +13,16 @@ from inspect import isclass
 from pathlib import Path
 from pkgutil import iter_modules
 from time import time
-from typing import ClassVar, Type  # noqa: F401
-from uuid import UUID
+from typing import TYPE_CHECKING, ClassVar
+
+if TYPE_CHECKING:
+    from uuid import UUID
 
 from bleak import BleakClient
-from bleak.backends.device import BLEDevice
-from bleak.backends.scanner import AdvertisementData
+
+if TYPE_CHECKING:
+    from bleak.backends.device import BLEDevice
+    from bleak.backends.scanner import AdvertisementData
 
 from bluetooth_clocks.exceptions import TimeNotReadableError, UnsupportedDeviceError
 
@@ -29,7 +33,7 @@ else:
 
 try:
     # Change here if project is renamed and does not equal the package name
-    dist_name = "bluetooth-clocks"  # pylint: disable=invalid-name
+    dist_name = "bluetooth-clocks"
     __version__ = version(dist_name)
 except PackageNotFoundError:  # pragma: no cover
     __version__ = "unknown"
@@ -83,33 +87,33 @@ class BluetoothClock(ABC):
           have a name.
     """
 
-    DEVICE_TYPE: ClassVar[str]  # noqa: CCE001
+    DEVICE_TYPE: ClassVar[str]
     """The name of the device type."""
 
-    SERVICE_UUID: ClassVar[UUID]  # noqa: CCE001
+    SERVICE_UUID: ClassVar[UUID]
     """The UUID of the service used to read/write the time."""
 
-    CHAR_UUID: ClassVar[UUID]  # noqa: CCE001
+    CHAR_UUID: ClassVar[UUID]
     """The UUID of the characteristic used to read/write the time."""
 
-    TIME_GET_FORMAT: ClassVar[str | None]  # noqa: CCE001
+    TIME_GET_FORMAT: ClassVar[str | None]
     """The format string to convert bytes read from the device to a time.
 
     This is ``None`` if the device doesn't support reading the time.
     """
 
-    TIME_SET_FORMAT: ClassVar[str]  # noqa: CCE001
+    TIME_SET_FORMAT: ClassVar[str]
     """The format string to convert a time to bytes written to the device."""
 
-    WRITE_WITH_RESPONSE: ClassVar[bool]  # noqa: CCE001
+    WRITE_WITH_RESPONSE: ClassVar[bool]
     """``True`` if the bytes to set the time should use write with response."""
 
-    LOCAL_NAME: ClassVar[str | None]  # noqa: CCE001
+    LOCAL_NAME: ClassVar[str | None]
     """The local name used to recognize this type of device.
 
     This is ``None`` if the local name isn't used to recognize the device."""
 
-    LOCAL_NAME_STARTS_WITH: ClassVar[bool | None]  # noqa: CCE001
+    LOCAL_NAME_STARTS_WITH: ClassVar[bool | None]
     """Whether the local name should start with `LOCAL_NAME`.
 
     ``True`` if the start of `LOCAL_NAME` is used to recognize this type of device.
@@ -128,7 +132,9 @@ class BluetoothClock(ABC):
 
     @classmethod
     def create_from_advertisement(
-        cls, device: BLEDevice, advertisement_data: AdvertisementData
+        cls,
+        device: BLEDevice,
+        advertisement_data: AdvertisementData,
     ) -> BluetoothClock:
         """Create object of a :class:`BluetoothClock` subclass from advertisement data.
 
@@ -175,7 +181,7 @@ class BluetoothClock(ABC):
     @classmethod
     def recognize(
         cls,
-        device: BLEDevice,  # pylint: disable=unused-argument
+        device: BLEDevice,
         advertisement_data: AdvertisementData,
     ) -> bool:
         """Recognize this device type from advertisement data.
@@ -246,9 +252,7 @@ class BluetoothClock(ABC):
             return local_name.startswith(cls.LOCAL_NAME)
         return local_name == cls.LOCAL_NAME
 
-    def get_time_from_bytes(  # pylint: disable=unused-argument
-        self, time_bytes: bytes
-    ) -> float:
+    def get_time_from_bytes(self, time_bytes: bytes) -> float:
         """Convert bytes read from a device to a timestamp.
 
         Override this method in a subclass for a device that supports getting the time.
@@ -267,12 +271,12 @@ class BluetoothClock(ABC):
             >>> from bluetooth_clocks.devices.xiaomi import LYWSD02
             >>> from bleak.backends.device import BLEDevice
             >>> from datetime import datetime
-            >>> clock = LYWSD02(BLEDevice("E7:2E:00:B1:38:96"))
+            >>> clock = LYWSD02(BLEDevice("E7:2E:00:B1:38:96", "", {}, -67))
             >>> timestamp = clock.get_time_from_bytes(
             ...             bytes([0xdd, 0xbc, 0xb9, 0x63, 0x00]))
             >>> print(datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%d %H:%M:%S"))
             2023-01-07 18:41:33
-        """
+        """  # noqa: E501
         raise TimeNotReadableError
 
     @abstractmethod
@@ -294,7 +298,7 @@ class BluetoothClock(ABC):
             >>> from bluetooth_clocks.devices.thermopro import TP393
             >>> from bleak.backends.device import BLEDevice
             >>> from datetime import datetime
-            >>> clock = TP393(BLEDevice("10:76:36:14:2A:3D"))
+            >>> clock = TP393(BLEDevice("10:76:36:14:2A:3D", "TP393 (2A3D)", {}, -67))
             >>> timestamp = datetime.fromisoformat("2023-01-07 17:32:50").timestamp()
             >>> clock.get_bytes_from_time(timestamp, ampm=True).hex()
             'a517010711203206005a'
@@ -321,7 +325,9 @@ class BluetoothClock(ABC):
             return self.get_time_from_bytes(time_bytes)
 
     async def set_time(
-        self, timestamp: float | None = None, ampm: bool = False
+        self,
+        timestamp: float | None = None,
+        ampm: bool = False,
     ) -> None:
         """Set the time of the Bluetooth clock.
 
@@ -347,7 +353,7 @@ class BluetoothClock(ABC):
 
 # Iterate through the modules in the module `device`.
 package_dir = Path(__file__).resolve().parent / "devices"
-for _, module_name, _ in iter_modules([str(package_dir)]):  # type: ignore
+for _, module_name, _ in iter_modules([str(package_dir)]):  # type: ignore[assignment]
     # Import the module and iterate through its attributes
     module = import_module(f"{__name__}.devices.{module_name}")
     for attribute_name in dir(module):

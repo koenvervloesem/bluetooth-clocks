@@ -3,11 +3,13 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 from bleak import BleakScanner
-from bleak.backends.device import BLEDevice
-from bleak.backends.scanner import AdvertisementData
+
+if TYPE_CHECKING:
+    from bleak.backends.device import BLEDevice
+    from bleak.backends.scanner import AdvertisementData
 
 from bluetooth_clocks import BluetoothClock, supported_devices
 from bluetooth_clocks.exceptions import UnsupportedDeviceError
@@ -24,7 +26,7 @@ async def find_clock(address: str, scan_duration: float = 5.0) -> BluetoothClock
           5 seconds.
 
     Raises:
-        UnsupportedDeviceError: If the device with address `address` isn’t
+        UnsupportedDeviceError: If the device with address `address` isn`t
           supported.
 
     Returns:
@@ -37,12 +39,17 @@ async def find_clock(address: str, scan_duration: float = 5.0) -> BluetoothClock
         """Try to recognize device as a Bluetooth clock."""
         nonlocal found_clock
         if device.address == address:
-            _logger.info(f"Device with address {address} found")
+            _logger.info(
+                "Device with address {address} found",
+                extra={"address": address},
+            )
             found_clock = BluetoothClock.create_from_advertisement(
-                device, advertisement_data
+                device,
+                advertisement_data,
             )
             _logger.info(
-                f"Device with address {address} recognized as {found_clock.DEVICE_TYPE}"
+                "Device with address {address} recognized as {device_type}",
+                extra={"address": address, "device_type": found_clock.DEVICE_TYPE},
             )
 
     scanner = BleakScanner(detection_callback=device_found)
@@ -52,11 +59,12 @@ async def find_clock(address: str, scan_duration: float = 5.0) -> BluetoothClock
     await asyncio.sleep(scan_duration)
     await scanner.stop()
 
-    return found_clock  # noqa: R504
+    return found_clock
 
 
 async def discover_clocks(
-    callback: Callable[[BluetoothClock], None], scan_duration: float = 5.0
+    callback: Callable[[BluetoothClock], None],
+    scan_duration: float = 5.0,
 ) -> None:
     """Discover Bluetooth clocks.
 
@@ -76,11 +84,19 @@ async def discover_clocks(
         if address not in found_addresses:
             try:
                 clock = BluetoothClock.create_from_advertisement(
-                    device, advertisement_data
+                    device,
+                    advertisement_data,
                 )
                 name = advertisement_data.local_name
                 clock_type = clock.DEVICE_TYPE
-                _logger.info(f"Found a {clock_type}: address {address}, name {name}")
+                _logger.info(
+                    "Found a {clock_type}: address {address}, name {device_name}",
+                    extra={
+                        "clock_type": clock_type,
+                        "address": address,
+                        "device_name": name,
+                    },
+                )
                 callback(clock)
             except UnsupportedDeviceError:
                 # Just ignore devices we don't recognize as a clock.
@@ -89,10 +105,16 @@ async def discover_clocks(
                 # Don't try to recognize the device with the same address again.
                 found_addresses.append(address)
 
-    _logger.info(f"Supported devices: {', '.join(supported_devices())}")
+    _logger.info(
+        "Supported devices: {devices}",
+        extra={"devices": ", ".join(supported_devices())},
+    )
     scanner = BleakScanner(detection_callback=device_found)
 
-    _logger.info(f"Scanning for supported clocks for {scan_duration} seconds...")
+    _logger.info(
+        "Scanning for supported clocks for {scan_duration} seconds...",
+        extra={"scan_duration": scan_duration},
+    )
 
     await scanner.start()
     await asyncio.sleep(scan_duration)

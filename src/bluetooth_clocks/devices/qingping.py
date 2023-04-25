@@ -40,14 +40,18 @@ class CGC1(BluetoothClock):
     LOCAL_NAME_STARTS_WITH = False
     """The local name should exactly match `LOCAL_NAME`."""
 
-    def get_bytes_from_time(self, timestamp: float, ampm: bool = False) -> bytes:
+    def get_bytes_from_time(
+        self,
+        timestamp: float,
+        ampm: bool = False,
+    ) -> bytes:
         """Generate the bytes to set the time on the Qingping BT Clock Lite.
 
         Args:
             timestamp (float): The time encoded as a Unix timestamp.
             ampm (bool): ``True`` if the device should show the time with AM/PM,
                 ``False`` if it should use 24-hour format. The Qingping BT Clock
-                Lite ignores this argument, as it doesn’t support this option.
+                Lite ignores this argument, as it doesn`t support this option.
 
         Returns:
             bytes: The bytes needed to set the time of the device to `timestamp`.

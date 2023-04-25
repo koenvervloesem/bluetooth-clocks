@@ -79,7 +79,8 @@ def parse_args(args: list[str]) -> Namespace:
 
     # Parser for the "discover" subcommand
     parser_discover = subparsers.add_parser(
-        "discover", help="discover supported Bluetooth clocks"
+        "discover",
+        help="discover supported Bluetooth clocks",
     )
     parser_discover.add_argument(
         "-s",
@@ -92,7 +93,8 @@ def parse_args(args: list[str]) -> Namespace:
 
     # Parser for the "get" subcommand
     parser_get = subparsers.add_parser(
-        "get", help="get the time from a Bluetooth clock"
+        "get",
+        help="get the time from a Bluetooth clock",
     )
     parser_get.add_argument(
         "-a",
@@ -128,7 +130,7 @@ def parse_args(args: list[str]) -> Namespace:
         "-t",
         "--time",
         type=str,
-        help="the time to set, in ISO 8601 format (e.g. 2023-01-10T16:20, default: current time)",
+        help="the time to set, in ISO 8601 format (e.g. 2023-01-10T16:20, default: current time)",  # noqa: E501
     )
     parser_set.add_argument(
         "-p",
@@ -150,7 +152,10 @@ def setup_logging(loglevel: int) -> None:
     """
     logformat = "[%(asctime)s] %(levelname)s:%(name)s:%(message)s"
     logging.basicConfig(
-        level=loglevel, stream=sys.stdout, format=logformat, datefmt="%Y-%m-%d %H:%M:%S"
+        level=loglevel,
+        stream=sys.stdout,
+        format=logformat,
+        datefmt="%Y-%m-%d %H:%M:%S",
     )
 
 
