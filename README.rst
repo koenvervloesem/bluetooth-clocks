@@ -40,25 +40,24 @@ Supported devices
 
 Bluetooth Clocks supports the following devices:
 
-+-------------------------+------------+-------------------+-----------+
-| Device                  | Set time   | Set 12/24h format | Read time |
-+=========================+============+===================+===========+
-| `Current Time Service`_ | Yes        | No                | Yes       |
-| (e.g. PineTime with     |            |                   |           |
-| InfiniTime firmware)    |            |                   |           |
-+-------------------------+------------+-------------------+-----------+
-| `PVVX firmware`_        | Yes        | No                | No        |
-| (LYWSD03MMC, MHO-C401,  |            |                   | (not yet) |
-| CGG1, CGDK2)            |            |                   |           |
-+-------------------------+------------+-------------------+-----------+
-| Qingping BT Clock Lite  | Yes        | No                | No        |
-+-------------------------+------------+-------------------+-----------+
-| ThermoPro TP358         | Yes        | Yes               | No        |
-+-------------------------+------------+-------------------+-----------+
-| ThermoPro TP393         | Yes        | Yes               | No        |
-+-------------------------+------------+-------------------+-----------+
-| Xiaomi LYWSD02          | Yes        | No                | Yes       |
-+-------------------------+------------+-------------------+-----------+
++--------------------------+------------+-------------------+-----------+
+| Device                   | Set time   | Set 12/24h format | Read time |
++==========================+============+===================+===========+
+| `Current Time Service`_  | Yes        | No                | Yes       |
+| (e.g. PineTime with      |            |                   |           |
+| InfiniTime firmware)     |            |                   |           |
++--------------------------+------------+-------------------+-----------+
+| `PVVX firmware`_         | Yes        | No                | No        |
+| (LYWSD03MMC, MHO-C401,   |            |                   | (not yet) |
+| CGG1, CGDK2, MJWSD05MMC, |            |                   |           |
+| MHO-C122)                |            |                   |           |
++--------------------------+------------+-------------------+-----------+
+| Qingping BT Clock Lite   | Yes        | No                | No        |
++--------------------------+------------+-------------------+-----------+
+| ThermoPro TP358/TP393    | Yes        | Yes               | No        |
++--------------------------+------------+-------------------+-----------+
+| Xiaomi LYWSD02           | Yes        | No                | Yes       |
++--------------------------+------------+-------------------+-----------+
 
 .. _Current Time Service: https://www.bluetooth.com/specifications/specs/current-time-service-1-1/
 .. _PVVX firmware: https://github.com/pvvx/ATC_MiThermometer
