@@ -20,8 +20,8 @@ ignore = [
   "FBT",     # flake8-boolean-trap
   "T20",     # flake8-print
 ]
-# Always generate Python 3.7-compatible code
-target-version = "py37"
+# Always generate Python 3.8-compatible code
+target-version = "py38"
 
 src = ["src", "test"]
 

@@ -6,9 +6,9 @@ advertisements and has a device-independent API to set and get the time on them.
 from __future__ import annotations
 
 import logging
-import sys
 from abc import ABC, abstractmethod
 from importlib import import_module
+from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
 from inspect import isclass
 from pathlib import Path
 from pkgutil import iter_modules
@@ -25,11 +25,6 @@ if TYPE_CHECKING:
     from bleak.backends.scanner import AdvertisementData
 
 from bluetooth_clocks.exceptions import TimeNotReadableError, UnsupportedDeviceError
-
-if sys.version_info[:2] >= (3, 8):
-    from importlib.metadata import PackageNotFoundError, version  # pragma: no cover
-else:
-    from importlib_metadata import PackageNotFoundError, version  # pragma: no cover
 
 try:
     # Change here if project is renamed and does not equal the package name
