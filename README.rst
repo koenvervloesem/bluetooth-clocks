@@ -47,8 +47,8 @@ Bluetooth Clocks supports the following devices:
 | (e.g. PineTime with      |            |                   |           |
 | InfiniTime firmware)     |            |                   |           |
 +--------------------------+------------+-------------------+-----------+
-| `PVVX firmware`_         | Yes        | No                | No        |
-| (LYWSD03MMC, MHO-C401,   |            |                   | (not yet) |
+| `PVVX firmware`_         | Yes        | No                | Yes       |
+| (LYWSD03MMC, MHO-C401,   |            |                   |           |
 | CGG1, CGDK2, MJWSD05MMC, |            |                   |           |
 | MHO-C122)                |            |                   |           |
 +--------------------------+------------+-------------------+-----------+

@@ -13,7 +13,8 @@ select = ["ALL"]
 ignore = [
   "ANN101",  # flake8-annotations
   "ANN102",
-  "ARG002",  # flake8-unused-arguments
+  "ARG001",  # flake8-unused-arguments
+  "ARG002",
   "ARG003",
   "DTZ001",  # flake8-datetimez
   "DTZ006",

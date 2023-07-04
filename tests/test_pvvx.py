@@ -10,7 +10,6 @@ from bleak.backends.scanner import AdvertisementData
 
 from bluetooth_clocks import supported_devices
 from bluetooth_clocks.devices.pvvx import PVVX
-from bluetooth_clocks.exceptions import TimeNotReadableError
 
 if sys.version_info >= (3, 9):
     from zoneinfo import ZoneInfo
@@ -67,15 +66,19 @@ def test_recognize() -> None:
 
 def test_readable() -> None:
     """Test whether the time is readable on the device."""
-    assert not PVVX.is_readable()
+    assert PVVX.is_readable()
 
 
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="timezone problem")
+@time_machine.travel(datetime(2023, 7, 4, 17, 4, 5, tzinfo=CET_TZ), tick=False)
 def test_get_time_from_bytes() -> None:
     """Test the conversion from bytes to a timestamp."""
-    with pytest.raises(TimeNotReadableError):
+    assert (
         PVVX(BLEDevice("A4:C1:38:D9:01:10", "", {}, -67)).get_time_from_bytes(
-            bytes([0x23, 0xDD, 0xBC, 0xB9, 0x63]),
+            bytes([0x23, 0xE5, 0x34, 0xA4, 0x64, 0x33, 0x3B, 0xA3, 0x64]),
         )
+        == time()
+    )
 
 
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="timezone problem")
