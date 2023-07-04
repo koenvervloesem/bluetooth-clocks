@@ -2,6 +2,17 @@
 Changelog
 =========
 
+Version 0.2.0: Get time from PVVX (2023-07-04)
+==============================================
+
+This release adds support for reading the time from devices with PVVX firmware.
+
+* Migrate code linting to Ruff, apply fixes by @koenvervloesem in https://github.com/koenvervloesem/bluetooth-clocks/pull/15
+* Add MJWSD05MMC and MHO-C122 to list of supported PVVX models by @koenvervloesem in https://github.com/koenvervloesem/bluetooth-clocks/pull/16
+* Assume if TYPE_CHECKING is covered by @koenvervloesem in https://github.com/koenvervloesem/bluetooth-clocks/pull/17
+* Deprecate Python 3.7 by @koenvervloesem in https://github.com/koenvervloesem/bluetooth-clocks/pull/18
+* Add read time command for PVVX firmware by @koenvervloesem in https://github.com/koenvervloesem/bluetooth-clocks/pull/19
+
 Version 0.1.2: Local time, please (2023-02-02)
 ==============================================
 
